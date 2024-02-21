@@ -69,3 +69,9 @@ arabic:
   pin: "204552cdcaec935142a7d409c194b541985a3808"
   sampling_rate: 16000
   language: "ar"
+
+macedonian:
+  model: "dtrifuno/wav2vec2-xls-r-300m-fleurs-mk"
+  pin: "457ff76510a92c6cbb36761569a7b0024a1b9ef7"
+  sampling_rate: 16000
+  language: "mk"

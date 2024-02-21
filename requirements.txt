@@ -1,10 +1,9 @@
 click
 datasets
-num2words
+num2words @ git+https://github.com/dtrifuno/num2words.git@mk_lang
 numpy
-openai
 pyyaml
 torch
 tokenizers
 torchaudio
-transformers===4.6.0
+transformers

@@ -184,13 +184,14 @@ class Aligner:
         log_probs = self.logp(xs)
         return self.align(log_probs, ys, ys_original, ids)
 
-    def align(self, log_probs, ys, ys_original, ids) -> typing.List[Alignment]:
+    def align(self, log_probs, ys, ys_original, ids, t) -> typing.List[Alignment]:
         """
         Align the audio and the transcripts in the batch. Returns a list of
         aligments, one per example. CTC probablities are processed in a single
         batch, on the gpu. Backtracking is performed in a loop on the CPU.
         """
 
+        print(t)
         alignments = []
         for i in range(len(ys)):
             y = ys[i]
@@ -221,9 +222,7 @@ class Aligner:
                 n_model_frames,
                 n_audio_samples,
                 self.sr,
-                text.similarity(
-                    recognised.strip(), y_whitespace, self.k_shingles
-                ),
+                text.similarity(recognised.strip(), y_whitespace, self.k_shingles),
             )
 
             alignments.append(alignment)
@@ -331,11 +330,7 @@ def backtrack(trellis, emission, tokens, blank_id=0):
         changed = trellis[t - 1, j - 1] + emission[t - 1, tokens[j - 1]]
 
         # 2. Store the path with frame-wise probability.
-        prob = (
-            emission[t - 1, tokens[j - 1] if changed > stayed else 0]
-            .exp()
-            .item()
-        )
+        prob = emission[t - 1, tokens[j - 1] if changed > stayed else 0].exp().item()
         # Return token index and time index in non-trellis coordinate.
         path.append(Point(j - 1, t - 1, prob))
 
@@ -380,9 +375,7 @@ def merge_words(segments, separator="|") -> typing.List[Segment]:
                     seg.length for seg in segs
                 )
                 words.append(
-                    Segment(
-                        word, segments[i1].start, segments[i2 - 1].end, score
-                    )
+                    Segment(word, segments[i1].start, segments[i2 - 1].end, score)
                 )
             i1 = i2 + 1
             i2 = i1

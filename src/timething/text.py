@@ -54,23 +54,6 @@ def nums2words(text: str, lang: str):
     return re.sub(NUMS_RE, fn, text)
 
 
-def clean_with_llm(chatter, text, max_length=500):
-    """Clean text using a large language model. This is a slow operation."""
-
-    cleaned_sections = []
-    sections = split(text, max_length)
-    for section in sections:
-        print(f"-> CLEANING\n\n {section}")
-        cleaned = chatter.complete(section)
-        print(f"-> CLEANED\n\n {cleaned}")
-        cleaned_sections.append(cleaned)
-
-    return " ".join(cleaned_sections)
-
-
-# decoding
-
-
 def ctc_collapse(tokens: typing.List[str], blank="<pad>", delimiter="|"):
     "Collapse CTC blanks"
     transcript = "".join(c for c, _ in itertools.groupby(tokens))

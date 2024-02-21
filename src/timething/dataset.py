@@ -211,9 +211,7 @@ class WindowedTrackDataset(Dataset):
 
         # resample, if needed
         if self.resample(self.sample_rate):
-            tf = torchaudio.transforms.Resample(
-                self.sample_rate, self.resample_to
-            )
+            tf = torchaudio.transforms.Resample(self.sample_rate, self.resample_to)
             self.audio = tf(self.audio)
             self.sample_rate = self.resample_to
 
